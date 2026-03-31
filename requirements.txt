@@ -1,0 +1,30 @@
+# ============================================================
+# Requirements for:
+# Blockchain - A Game Changer for Securing IoT Data
+# Smart Web Attack Detection System using Multi-Model Deep
+# Learning Ensemble (CNN, LSTM, MRN) + Blockchain AES Encryption
+# ============================================================
+
+# ── Core Web Framework ──
+Django==3.2.25
+
+# ── Database Driver (MySQL) ──
+PyMySQL==1.0.2
+cryptography==3.4.8         # required by PyMySQL auth_plugin
+
+# ── AES Encryption (Blockchain Layer) ──
+cryptography>=3.4.8         # Fernet AES-128-CBC symmetric encryption
+
+# ── Machine Learning Ensemble (CNN / LSTM / MRN) ──
+scikit-learn>=0.24.2        # LogisticRegression, RandomForest, LinearSVC, TF-IDF
+numpy>=1.19.5               # Array operations for ML models
+scipy>=1.5.4                # Required by scikit-learn internally
+
+# ── Email / SMTP (OTP System) ──
+# Uses Django's built-in django.core.mail — no extra package needed
+
+# ── Python Standard Libraries Used (no install needed) ──
+# re          — regex pattern matching
+# os          — file system operations
+# random      — OTP generation (randint)
+# time        — ML inference latency simulation

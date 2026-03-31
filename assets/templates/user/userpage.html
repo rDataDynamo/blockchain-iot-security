@@ -1,0 +1,87 @@
+{% extends 'user/design.html' %}
+{% block userblock %}
+{% load static %}
+
+<style>
+    .upload-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+    }
+
+    .submit-row {
+        text-align: center;
+        margin-top: 2rem;
+    }
+</style>
+
+<h2 class="page-heading"><span>IoT Data Upload</span></h2>
+
+<div class="upload-container">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            {% if message.tags == 'error' %}
+            <div id="mlAlertModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+                <div style="background: #1e1e1e; border: 2px solid #ff4757; border-radius: 12px; padding: 30px; max-width: 500px; width: 90%; box-shadow: 0 0 30px rgba(255, 71, 87, 0.4); text-align: center; color: white; font-family: monospace;">
+                    <div style="font-size: 50px; margin-bottom: 10px;">🛡️⚠️</div>
+                    <h2 style="color: #ff4757; margin-top: 0; text-transform: uppercase; letter-spacing: 2px;">Threat Blocked</h2>
+                    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 25px;">{{ message }}</p>
+                    <button onclick="document.getElementById('mlAlertModal').style.display='none'" style="background: #ff4757; color: white; border: none; padding: 10px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; text-transform: uppercase;">Acknowledge</button>
+                </div>
+            </div>
+            {% else %}
+            <div class="alert alert-success" style="padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px; color: #3c763d; background-color: #dff0d8; border-color: #d6e9c6;">
+                {{ message }}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="card">
+        <div class="card-title">Upload Confidential File</div>
+        <form name="form" method="post" enctype="multipart/form-data" autocomplete="off">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label class="form-label">File Name</label>
+                <input type="text" name="name" placeholder="Enter file name">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <input type="text" name="des" placeholder="Brief description of the data">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Upload IoT File</label>
+                <input type="file" name="myfile">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Location</label>
+                <input type="text" name="area" placeholder="Device or sensor location">
+            </div>
+
+            <div class="submit-row">
+                <input type="submit" name="submit" value="Encrypt & Upload">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

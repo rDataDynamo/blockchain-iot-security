@@ -1,0 +1,51 @@
+{% extends 'user/design.html' %}
+{% block userblock %}
+{% load static %}
+
+<style>
+    .otp-container {
+        max-width: 550px;
+        margin: 0 auto;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+    }
+
+    .submit-row {
+        text-align: center;
+        margin-top: 2rem;
+    }
+</style>
+
+<h2 class="page-heading"><span>Hash Code Validation</span></h2>
+
+<div class="otp-container">
+    <div class="card">
+        <div class="card-title">Enter Verification Code</div>
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label class="form-label">Please enter Hash Code value</label>
+                <input type="text" name="otp" placeholder="Enter your hash code">
+            </div>
+
+            <div class="submit-row">
+                <input type="submit" name="submit" value="Verify Code">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

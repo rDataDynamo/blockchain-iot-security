@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain IoT Security</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --accent: #d53369;
+            --dark: #070b14;
+            --card-bg: rgba(13, 19, 36, 0.7);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated grid background */
+        .bg-animated {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(79, 172, 254, 0.15), transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(0, 242, 254, 0.15), transparent 50%);
+            z-index: 0;
+        }
+
+        .grid-overlay {
+            position: absolute;
+            inset: -50%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            perspective: 800px;
+            transform: scale(1.5) rotateX(60deg);
+            animation: gridMove 15s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: scale(1.5) rotateX(60deg) translateY(0); }
+            100% { transform: scale(1.5) rotateX(60deg) translateY(50px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .title-container {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px rgba(0, 242, 254, 0.4);
+            margin-bottom: 0.5rem;
+            letter-spacing: 4px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #a0aec0;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+            animation: pulse 2.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { opacity: 0.7; text-shadow: 0 0 0px var(--primary); }
+            to { opacity: 1; text-shadow: 0 0 15px var(--primary); }
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 3.5rem 3rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 242, 254, 0.05);
+            animation: slideUp 1s ease-out 0.2s both;
+            transition: all 0.3s ease;
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 242, 254, 0.2);
+            border-color: rgba(0, 242, 254, 0.3);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: white;
+            letter-spacing: 2px;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.2rem;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            transform: scale(1.02);
+        }
+
+        .input-group input::placeholder {
+            color: #718096;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            color: #0b0f19;
+            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 15px 30px rgba(0, 242, 254, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.2);
+            transform: rotate(45deg) translateY(100%);
+            transition: 0.5s;
+        }
+        
+        .btn-primary:hover::after {
+            transform: rotate(45deg) translateY(-100%);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Ambient floating particles */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            opacity: 0.5;
+            animation: float 10s infinite ease-in-out;
+            z-index: 1;
+        }
+        
+        .p1 { width: 5px; height: 5px; left: 20%; top: 30%; animation-duration: 15s; }
+        .p2 { width: 8px; height: 8px; left: 80%; top: 40%; animation-duration: 20s; animation-delay: 2s; background: var(--secondary); box-shadow: 0 0 10px var(--secondary);}
+        .p3 { width: 4px; height: 4px; left: 30%; top: 70%; animation-duration: 12s; animation-delay: 5s; }
+        .p4 { width: 6px; height: 6px; left: 70%; top: 80%; animation-duration: 18s; animation-delay: 1s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-40px) translateX(20px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animated"></div>
+    <div class="grid-overlay"></div>
+    
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+    <div class="particle p4"></div>
+
+    <div class="container">
+        <div class="title-container">
+            <h1 class="title">BLOCKCHAIN</h1>
+            <div class="subtitle">A Game Changer for Securing IoT Data</div>
+        </div>
+
+        <div class="login-card">
+            <div class="login-header">ACCESS NODE</div>
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="input-group">
+                    <input type="text" name="username" placeholder="User ID" required autocomplete="off">
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Secure Login</button>
+                <a href="{% url 'register' %}">
+                    <button type="button" class="btn btn-secondary">New Node Registration</button>
+                </a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

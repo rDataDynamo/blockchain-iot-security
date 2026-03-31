@@ -1,0 +1,80 @@
+{% extends 'user/design.html' %}
+{% block userblock %}
+{% load static %}
+
+<style>
+    .profile-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        max-width: 650px;
+        margin: 0 auto;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.2rem;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.2s;
+    }
+
+    .detail-row:hover {
+        background: rgba(0, 242, 254, 0.04);
+    }
+
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-muted);
+        min-width: 140px;
+    }
+
+    .detail-value {
+        color: white;
+        font-weight: 500;
+        font-size: 0.95rem;
+        text-align: right;
+    }
+</style>
+
+<h2 class="page-heading"><span>My Profile</span></h2>
+
+<div class="profile-grid">
+    <div class="card">
+        <div class="card-title">Account Information</div>
+
+        <div class="detail-row">
+            <div class="detail-label">First Name</div>
+            <div class="detail-value">{{obje.firstname}}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Last Name</div>
+            <div class="detail-value">{{obje.lastname}}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">User ID</div>
+            <div class="detail-value">{{obje.userid}}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Mobile Number</div>
+            <div class="detail-value">{{obje.mobilenumber}}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Email</div>
+            <div class="detail-value">{{obje.email}}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Gender</div>
+            <div class="detail-value">{{obje.gender}}</div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

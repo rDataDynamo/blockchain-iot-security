@@ -1,0 +1,47 @@
+{% extends 'user/design.html' %}
+{% block userblock %}
+{% load static %}
+
+<style>
+    .data-table-wrapper {
+        overflow-x: auto;
+        border-radius: 12px;
+    }
+</style>
+
+<h2 class="page-heading"><span>IoT Data Download</span></h2>
+
+<div class="card">
+    <div class="card-title">Available Files</div>
+    <div class="data-table-wrapper">
+        <form method="post">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <th>File Name</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                    <th>Uploaded File</th>
+                    <th>Action</th>
+                </tr>
+
+                {% for v in obj %}
+                <tr>
+                    <td>{{v.topic}}</td>
+                    <td>{{v.description}}</td>
+                    <td>{{v.location}}</td>
+                    <td>{{v.upload_file}}</td>
+
+                    {% if v.add_count <= 100 %}
+                    <td><a href="{% url 'secure_download' v.id %}">Decrypt & Download</a></td>
+                    {% else %}
+                    <td><span style="color:#f87171;font-size:0.85rem;opacity:0.8;">Access Limit Reached</span></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </table>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

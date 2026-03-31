@@ -1,0 +1,5 @@
+ 
+pip install mysqlclient==1.3.12
+
+
+mysqlclient.whl(www.ifd.uci.edu)

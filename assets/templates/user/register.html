@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Blockchain IoT Security</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --accent: #d53369;
+            --dark: #070b14;
+            --card-bg: rgba(13, 19, 36, 0.75);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+            overflow-x: hidden;
+            padding: 3rem 1rem;
+        }
+
+        /* Animated grid background */
+        .bg-animated {
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 85% 50%, rgba(79, 172, 254, 0.15), transparent 50%),
+                radial-gradient(circle at 15% 30%, rgba(0, 242, 254, 0.15), transparent 50%);
+            z-index: 0;
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: -50%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            perspective: 800px;
+            transform: scale(1.5) rotateX(60deg);
+            animation: gridMove 15s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: scale(1.5) rotateX(60deg) translateY(0); }
+            100% { transform: scale(1.5) rotateX(60deg) translateY(50px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .title-container {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 242, 254, 0.4);
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #a0aec0;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .registers {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem 3rem;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 242, 254, 0.05);
+            animation: slideUp 1s ease-out 0.2s both;
+            transition: all 0.3s ease;
+        }
+
+        .registers:hover {
+            box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 242, 254, 0.2);
+            border-color: rgba(0, 242, 254, 0.3);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: white;
+            letter-spacing: 2px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1rem;
+        }
+
+        /* Form Table styling for Django auto fields */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 1.2rem;
+        }
+
+        td {
+            padding: 0;
+            border: none;
+            background: transparent !important;
+        }
+
+        td:first-child {
+            width: 40%;
+            font-weight: 600;
+            color: #e2e8f0;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            padding-right: 15px;
+        }
+
+        /* Generic styling for all input variables coming from {{form}} */
+        input[type="text"], 
+        input[type="password"],
+        input[type="email"],
+        input[type="number"],
+        select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            padding: 0.8rem 1rem !important;
+            border-radius: 8px !important;
+            color: white !important;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+            background: rgba(0, 0, 0, 0.5) !important;
+            transform: scale(1.02);
+        }
+
+        select option {
+            background: #0f172a;
+            color: white;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 1rem !important;
+            border: none !important;
+            border-radius: 10px !important;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 1.5rem;
+            background: linear-gradient(45deg, var(--secondary), var(--primary)) !important;
+            color: #070b14 !important;
+            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3);
+        }
+
+        input[type="submit"]:hover {
+            box-shadow: 0 15px 30px rgba(0, 242, 254, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+            text-shadow: 0 0 8px var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animated"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="container">
+        <div class="title-container">
+            <h1 class="title">BLOCKCHAIN</h1>
+            <div class="subtitle">A Game Changer for Securing IoT Data</div>
+        </div>
+
+        <div class="registers">
+            <div class="login-header">NEW NODE CREATION</div>
+            <form method="post">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <td>First Name</td>
+                        <td>{{form.firstname}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last Name</td>
+                        <td>{{form.lastname}}</td>
+                    </tr>
+                    <tr>
+                        <td>User ID</td>
+                        <td>{{form.userid}}</td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td>{{form.password}}</td>
+                    </tr>
+                    <tr>
+                        <td>Mobile Number</td>
+                        <td>{{form.mobilenumber}}</td>
+                    </tr>
+                    <tr>
+                        <td>Email Address</td>
+                        <td>{{form.email}}</td>
+                    </tr>
+                    <tr>
+                        <td>Gender</td>
+                        <td>{{form.gender}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" name="submit" value="Authenticate Node"></td>
+                    </tr>
+                </table>
+            </form>
+            <a href="{% url 'index' %}" class="back-link">Return to Login</a>
+        </div>
+    </div>
+</body>
+</html>

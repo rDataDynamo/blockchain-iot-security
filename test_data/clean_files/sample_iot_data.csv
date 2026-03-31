@@ -1,0 +1,11 @@
+device_id,timestamp,temperature,humidity,location,status,reading
+IOT_001,2026-03-01 08:00:00,24.5,60,Chennai,active,22.3
+IOT_002,2026-03-01 08:05:00,25.1,61,Mumbai,active,23.7
+IOT_003,2026-03-01 08:10:00,23.8,59,Hyderabad,active,21.9
+IOT_004,2026-03-01 08:15:00,24.9,62,Bangalore,active,24.1
+IOT_005,2026-03-01 08:20:00,25.3,60,Delhi,active,25.0
+IOT_006,2026-03-01 08:25:00,24.1,58,Chennai,active,22.8
+IOT_007,2026-03-01 08:30:00,24.7,61,Mumbai,active,23.5
+IOT_008,2026-03-01 08:35:00,25.0,60,Hyderabad,active,24.3
+IOT_009,2026-03-01 08:40:00,24.4,59,Bangalore,active,23.9
+IOT_010,2026-03-01 08:45:00,25.2,61,Delhi,active,25.1
