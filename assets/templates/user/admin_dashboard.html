@@ -241,7 +241,10 @@
     <div class="navbar-brand">
         🛡️ <span>IoT Security</span> Admin <span class="badge-admin">Admin</span>
     </div>
-    <a href="/" class="nav-back">← Back to Site</a>
+    <div>
+        <a href="/" class="nav-back">← Back to Site</a>
+        <a href="{% url 'admin_logout' %}" class="nav-logout">Logout</a>
+    </div>
 </nav>
 
 <div class="container">

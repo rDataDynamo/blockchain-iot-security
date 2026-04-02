@@ -68,7 +68,13 @@
         </div>
         <div class="detail-row">
             <div class="detail-label">Email</div>
-            <div class="detail-value">{{obje.email}}</div>
+            <div class="detail-value">
+                <form method="POST" style="display:flex; gap:10px; align-items:center; justify-content:flex-end;">
+                    {% csrf_token %}
+                    <input type="email" name="new_email" value="{{obje.email}}" required style="padding:6px 12px; border-radius:6px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.3); color:white; font-family:'Inter', sans-serif;">
+                    <button type="submit" style="background:linear-gradient(45deg, #4facfe, #00f2fe); color:#070b14; border:none; padding:6px 15px; border-radius:6px; font-weight:700; cursor:pointer; text-transform:uppercase; font-size:11px; letter-spacing:1px; transition:transform 0.2s;">Save</button>
+                </form>
+            </div>
         </div>
         <div class="detail-row">
             <div class="detail-label">Gender</div>

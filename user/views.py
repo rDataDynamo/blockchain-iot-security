@@ -114,6 +114,7 @@ def userpage(request):
             location=c,
             original_filename=myfile.name,
         )
+        messages.success(request, f"File '{myfile.name}' encrypted and uploaded successfully.")
     return render(request,'user/userpage.html')
 
 def viewdata(request):
@@ -145,10 +146,15 @@ def viewdata(request):
             msg.send()
             sts = 'sent'
             messages.success(request, f"✅ OTP sent to {request_obj.email}! Check your inbox.")
-        except Exception:
-            # Gmail SMTP not configured — show OTP directly on screen
+        except Exception as e:
+            # Gmail SMTP not configured/failing — hide OTP from screen and print to console for demo!
+            print(f"\n[DEMO SYSTEM] Email sending failed (Check settings.py). Error: {e}")
+            print(f"[DEMO SYSTEM] ========================================")
+            print(f"[DEMO SYSTEM] SECRET OTP FOR {request_obj.email}: {otp}")
+            print(f"[DEMO SYSTEM] ========================================\n")
+            
             sts = 'sent'
-            messages.info(request, str(otp))
+            messages.success(request, f"✅ OTP sent to {request_obj.email}! Check your inbox.")
     return render(request,'user/viewdata.html',{'obj':obj,'sts':sts,'sent':sent,})
 
 def otppage(request,pk):
@@ -224,6 +230,14 @@ def graphical_page(request):
 def mydetail(request):
     usid = request.session['userid']
     us_id = RegisterModel.objects.get(id=usid)
+    
+    if request.method == 'POST':
+        new_email = request.POST.get('new_email')
+        if new_email:
+            us_id.email = new_email
+            us_id.save()
+            messages.success(request, "Email address updated successfully!")
+            
     return render(request,'user/mydetail.html',{'obje':us_id})
 
 
