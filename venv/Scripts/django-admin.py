@@ -1,4 +1,4 @@
-#!C:\Major project\Major project\Blockchain A Game Changer for Securing IoT Data\blackchine_project\venv\Scripts\python.exe
+#!C:\Users\jakku\Downloads\Major project\Major project\blockchain-iot-security\venv\Scripts\python.exe
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 

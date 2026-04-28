@@ -26,6 +26,35 @@
         text-align: center;
         margin-top: 2rem;
     }
+
+    .web-alert {
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+        color: #fca5a5;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        text-align: center;
+        display: none;
+    }
+
+    .web-alert.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 </style>
 
 <h2 class="page-heading"><span>Hash Code Validation</span></h2>
@@ -33,12 +62,17 @@
 <div class="otp-container">
     <div class="card">
         <div class="card-title">Enter Verification Code</div>
-        <form method="post">
+
+        <div id="error-alert" class="web-alert {% if sts and sts != 'c' %}active{% endif %}">
+            {% if sts and sts != 'c' %}{{ sts }}{% endif %}
+        </div>
+
+        <form method="post" onsubmit="return validateForm()">
             {% csrf_token %}
 
             <div class="form-group">
                 <label class="form-label">Please enter Hash Code value</label>
-                <input type="text" name="otp" placeholder="Enter your hash code">
+                <input type="text" name="otp" id="id_otp" placeholder="Enter your hash code">
             </div>
 
             <div class="submit-row">
@@ -47,5 +81,21 @@
         </form>
     </div>
 </div>
+
+<script>
+    function validateForm() {
+        var otpValue = document.getElementById("id_otp").value.trim();
+        var errorAlert = document.getElementById("error-alert");
+
+        if (otpValue === "") {
+            errorAlert.textContent = "OTP cannot be empty! Please enter your code.";
+            errorAlert.classList.add("active");
+            return false; // Prevent form submission
+        }
+
+        errorAlert.classList.remove("active");
+        return true;
+    }
+</script>
 
 {% endblock %}

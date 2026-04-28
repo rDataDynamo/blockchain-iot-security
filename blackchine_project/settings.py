@@ -82,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blockchain_iot',
         'USER': 'root',
-        'PASSWORD': '1278',
+        'PASSWORD': '2018@Kar1111',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }

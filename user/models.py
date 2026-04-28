@@ -5,10 +5,10 @@ from django.db import models
 class RegisterModel(models.Model):
     firstname=models.CharField(max_length=200)
     lastname=models.CharField(max_length=200)
-    userid=models.CharField(max_length=200)
-    password=models.IntegerField()
+    userid=models.CharField(max_length=200, unique=True)
+    password=models.CharField(max_length=255)
     mobilenumber=models.BigIntegerField()
-    email=models.EmailField()
+    email=models.EmailField(unique=True)
     gender=models.CharField(max_length=200)
 
 

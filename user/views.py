@@ -11,6 +11,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 # Create your views here.
 from blackchine_project.settings import DEFAULT_FROM_EMAIL
 from django.contrib import messages
+from django.contrib.auth.hashers import make_password, check_password
 from user.ml_engine import get_predictor
 from user.forms import RegisterForms
 from user.models import RegisterModel, UploadModel, AttackLog
@@ -38,26 +39,38 @@ def index(request):
         usid = request.POST.get('username')
         pswd = request.POST.get('password')
         try:
-            check = RegisterModel.objects.get(userid=usid, password=pswd)
-            request.session['userid'] = check.id
-            return redirect('userpage')
-        except:
-            pass
+            # Find the user by userid, then securely compare the raw password against the stored hash
+            user = RegisterModel.objects.filter(userid=usid).first()
+            if user and check_password(pswd, user.password):
+                request.session['userid'] = user.id
+                return redirect('userpage')
+            else:
+                messages.error(request, "Invalid User ID or Password.")
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
+            
     return render(request,'user/index.html')
 
 def register(request):
     if request.method == "POST":
         forms = RegisterForms(request.POST)
         if forms.is_valid():
-            forms.save()
+            user = forms.save(commit=False)
+            user.password = make_password(user.password)
+            user.save()
             return redirect('index')
     else:
         forms = RegisterForms()
     return render(request,'user/register.html',{'form':forms})
 
 def userpage(request):
+    if 'userid' not in request.session:
+        return redirect('index')
     uid = request.session['userid']
-    request_obj = RegisterModel.objects.get(id=uid)
+    request_obj = RegisterModel.objects.filter(id=uid).first()
+    if not request_obj:
+        request.session.flush()
+        return redirect('index')
     nme=request_obj.firstname
     myfile = ''
     a = ''
@@ -118,15 +131,23 @@ def userpage(request):
     return render(request,'user/userpage.html')
 
 def viewdata(request):
+    if 'userid' not in request.session:
+        return redirect('index')
     uid = ''
     sts = 'pending'
     sent = 'sent'
     uid = request.session['userid']
-    request_obj = RegisterModel.objects.get(id=uid)
+    request_obj = RegisterModel.objects.filter(id=uid).first()
+    if not request_obj:
+        request.session.flush()
+        return redirect('index')
     obj = UploadModel.objects.filter(usid=request_obj)
     if request.method == "POST":
         uid = request.session['userid']
-        request_obj = RegisterModel.objects.get(id=uid)
+        request_obj = RegisterModel.objects.filter(id=uid).first()
+        if not request_obj:
+            request.session.flush()
+            return redirect('index')
         subject = "Your Secure IoT Data OTP Code"
         otp = randint(1000, 9999)
         request.session['otp'] = otp
@@ -158,19 +179,23 @@ def viewdata(request):
     return render(request,'user/viewdata.html',{'obj':obj,'sts':sts,'sent':sent,})
 
 def otppage(request,pk):
-    password = request.session['otp']
+    if 'userid' not in request.session:
+        return redirect('index')
+    password = request.session.get('otp')
+    if not password:
+        return redirect('viewdata')
     sts = "c"
     pas = type(password)
     ss = ''
     count = 0
     aaa = ''
     vott, vott1 = 0, 0
-    pkid = UploadModel.objects.get(id=pk)
+    pkid = get_object_or_404(UploadModel, id=pk, usid_id=request.session['userid'])
     aaa = pkid.id
     request.session['jhf'] = aaa
     if request.method == "POST":
 
-        objs = UploadModel.objects.get(id=pk)
+        objs = get_object_or_404(UploadModel, id=pk, usid_id=request.session['userid'])
         unid = objs.id
         vot_count = UploadModel.objects.all().filter(id=unid)
         for t in vot_count:
@@ -182,8 +207,7 @@ def otppage(request,pk):
 
         onetime = request.POST.get('otp', '')
         ss = onetime
-        if int(password) == int(onetime):
-
+        if onetime and str(onetime).isdigit() and int(password) == int(onetime):
             return redirect('download_page')
         else:
             sts = "Please Enter Correct OTP"
@@ -191,6 +215,8 @@ def otppage(request,pk):
 
 
 def download_page(request):
+    if 'userid' not in request.session:
+        return redirect('index')
     aaaa = request.session['jhf']
     obj = UploadModel.objects.filter(id=aaaa)
     return render(request,'user/download_page.html',{'a':aaaa,'obj':obj})
@@ -201,7 +227,9 @@ def secure_download(request, pk):
     BLOCKCHAIN DECRYPTION: Decrypt and serve file only after hash verification.
     This ensures that the raw encrypted file on disk is useless without the key.
     """
-    file_obj = get_object_or_404(UploadModel, id=pk)
+    if 'userid' not in request.session:
+        return redirect('index')
+    file_obj = get_object_or_404(UploadModel, id=pk, usid_id=request.session['userid'])
 
     # Read the encrypted file from storage
     encrypted_data = file_obj.upload_file.read()
@@ -228,8 +256,13 @@ def graphical_page(request):
     return render(request,'user/graphical_page.html',{'obj':chart})
 
 def mydetail(request):
+    if 'userid' not in request.session:
+        return redirect('index')
     usid = request.session['userid']
-    us_id = RegisterModel.objects.get(id=usid)
+    us_id = RegisterModel.objects.filter(id=usid).first()
+    if not us_id:
+        request.session.flush()
+        return redirect('index')
     
     if request.method == 'POST':
         new_email = request.POST.get('new_email')
